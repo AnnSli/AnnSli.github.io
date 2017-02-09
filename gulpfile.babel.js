@@ -27,7 +27,7 @@ function loadConfig() {
 
 // Build the "dist" folder by running all of the below tasks
 gulp.task('build',
- gulp.series(clean, gulp.parallel(pages, sass, javascript, images, copy, copyDocs), styleGuide));
+ gulp.series(clean, gulp.parallel(pages, sass, javascript, images, copy), styleGuide));
 
 // Build the site, run the server, and watch for file changes
 gulp.task('default',
@@ -45,12 +45,6 @@ function copy() {
   return gulp.src(PATHS.assets)
     .pipe(gulp.dest(PATHS.dist + '/assets'));
 }
-
-function copyDocs() {
-    return gulp.src('dist/**/*')
-        .pipe(gulp.dest('docs'));
-}
-
 
 // Copy page templates into finished HTML files
 function pages() {
@@ -141,7 +135,6 @@ function reload(done) {
 // Watch for changes to static assets, pages, Sass, and JavaScript
 function watch() {
   gulp.watch(PATHS.assets, copy);
-  gulp.watch(PATHS.assets, copyDocs);
   gulp.watch('src/pages/**/*.html').on('all', gulp.series(pages, browser.reload));
   gulp.watch('src/{layouts,partials}/**/*.html').on('all', gulp.series(resetPages, pages, browser.reload));
   gulp.watch('src/assets/scss/**/*.scss').on('all', gulp.series(sass, browser.reload));
